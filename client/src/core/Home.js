@@ -1,142 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Base from "./Base";
-
+import Loading from "./Loading";
+import axios from "axios"
+import LaunchersInfo from "./LaunchersInfo";
 
 const Home = () => {
+    const [spacexData, setSpacexData] = useState([]);
+    const [loading , setLoading] = useState(false)
+    const [dates, setDates] = useState({currentDate : new Date(),pastDate : new Date("2006-03-22")})
+
+    const {currentDate, pastDate} = dates;  // destructure dates
+
+    const preload =  async () => {
+        setLoading(true);
+        const res= await axios .get(`https://api.spacexdata.com/v3/launches`);
+        let data = [];  // temporary storing data
+        res.data.map( eachData => {
+            let comparedate = new Date(eachData.launch_date_utc)
+            if(pastDate < comparedate && currentDate > comparedate){                
+                data.push(eachData)   
+            } 
+        }) 
+        setSpacexData(data)
+        setLoading(false);
+    }
+  
+    useEffect( () => {
+        preload()
+    }, [])
+  
+    
+    const upcomingLaunches = async () => {  //fetching upcoming launches data
+            setLoading(true)
+            const res = await axios .get(`https://api.spacexdata.com/v3/launches/upcoming`);
+            setSpacexData(res.data)
+            setLoading(false)
+    }
+
+
     return (
         <Base>
-            <div class="data">
-            <div class="selection">
-                <div class="left-side">
-                    <i class="fa fa-calendar-o"></i><select>
-                        <option selected value="6">Past 6 Months</option>
-                        <option value="10">Past 10 Months</option>
-                        <option value="1">Past 1 year</option>
-                    </select>
-                </div>
-                <div class="right-side">
-                    <i class="fa fa-filter"></i><select name="" id="">
-                        <option value="" selected>All Launches</option>
-                    </select>
-                </div>
-            </div>
-            <div class="details">
-                <table width="100%">
-                    <tr class="header" height="50px;">
-                        <th>No:</th>
-                        <th onclick="turnOn()">Launched (UTC)</th>
-                        <th>Location</th>
-                        <th>Mission</th>
-                        <th>Orbit</th>
-                        <th>Launch Status</th>
-                        <th>Rocket</th>
-                    </tr>
-                    
-
-                    <tr class="tr">
-                        <th>01</th>
-                        <th>24 March 2006 at 22.30</th>
-                        <th>Kwajalein Atoll</th>
-                        <th>FalconSat</th>
-                        <th>LEO</th>
-                        <th>
-                            <p class="failed">Failed</p>
-                        </th>
-                        <th>Falcon 9</th>
-                    </tr>
-                    <tr class="tr">
-                        <th>01</th>
-                        <th>24 March 2006 at 22.30</th>
-                        <th>Kwajalein Atoll</th>
-                        <th>FalconSat</th>
-                        <th>LEO</th>
-                        <th>
-                            <p class="success">Success</p>
-                        </th>
-                        <th>Falcon 9</th>
-                    </tr>
-                    <tr class="tr">
-                        <th>01</th>
-                        <th>24 March 2006 at 22.30</th>
-                        <th>Kwajalein Atoll</th>
-                        <th>FalconSat</th>
-                        <th>LEO</th>
-                        <th>
-                            <p class="upcoming">Upcoming</p>
-                        </th>
-                        <th>Falcon 9</th>
-                    </tr>
-                    <tr class="tr">
-                        <th>01</th>
-                        <th>24 March 2006 at 22.30</th>
-                        <th>Kwajalein Atoll</th>
-                        <th>FalconSat</th>
-                        <th>LEO</th>
-                        <th>
-                            <p class="failed">Failed</p>
-                        </th>
-                        <th>Falcon 9</th>
-                    </tr>
-                    <tr class="tr">
-                        <th>01</th>
-                        <th>24 March 2006 at 22.30</th>
-                        <th>Kwajalein Atoll</th>
-                        <th>FalconSat</th>
-                        <th>LEO</th>
-                        <th>
-                            <p class="failed">Failed</p>
-                        </th>
-                        <th>Falcon 9</th>
-                    </tr>
-                    <tr class="tr">
-                        <th>01</th>
-                        <th>24 March 2006 at 22.30</th>
-                        <th>Kwajalein Atoll</th>
-                        <th>FalconSat</th>
-                        <th>LEO</th>
-                        <th>
-                            <p class="success">Success</p>
-                        </th>
-                        <th>Falcon 9</th>
-                    </tr>
-                    <tr class="tr">
-                        <th>01</th>
-                        <th>24 March 2006 at 22.30</th>
-                        <th>Kwajalein Atoll</th>
-                        <th>FalconSat</th>
-                        <th>LEO</th>
-                        <th>
-                            <p class="upcoming">Upcoming</p>
-                        </th>
-                        <th>Falcon 9</th>
-                    </tr>
-                    <tr class="tr">
-                        <th>01</th>
-                        <th>24 March 2006 at 22.30</th>
-                        <th>Kwajalein Atoll</th>
-                        <th>FalconSat</th>
-                        <th>LEO</th>
-                        <th>
-                            <p class="failed">Failed</p>
-                        </th>
-                        <th>Falcon 9</th>
-                    </tr>
-
-
-                </table>
-                <p class="no-result">No results found for the specific filter</p>
-            </div>
-            <div class="next-page">
-                <span><i class="fa fa-angle-left"></i></span>
-                <span>1</span>
-                <span>2</span>
-                <span>...</span>
-                <span>10</span>
-                <span><i class="fa fa-angle-right"></i></span>
-            </div>
-        </div>
+        {loading && (<Loading type="spin" color="#fffff"/>)}
+        <LaunchersInfo spacexData={spacexData} setDates={setDates}  upcomingLaunches={upcomingLaunches} preload={preload}/>                 
         </Base>
     )
 }
 
-export default Home;
+export default Home
