@@ -1,8 +1,8 @@
-import {API} from "../../backend";
+
 
 
 export const signup = user => {
-    return fetch(`${API}/signup`,{
+    return fetch(`https://spacexrocket.herokuapp.com/api/signup`,{
         method : "POST",
         headers :{
             Accept : "application/json",
@@ -16,7 +16,7 @@ export const signup = user => {
 
 
 export const signin = user => {
-    return fetch(`${API}/signin`,{
+    return fetch(`https://spacexrocket.herokuapp.com/api/signin`,{
         method : "POST",
         headers :{
             Accept : "application/json",
@@ -40,7 +40,7 @@ export const signout = next => {
         localStorage.removeItem("auth")
         next();
 
-        return fetch(`${API}/signout`,{
+        return fetch(`https://spacexrocket.herokuapp.com/api/signout`,{
             method:"GET"
         }).then(response => {
             return response.json()

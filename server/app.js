@@ -11,7 +11,7 @@ const authRoutes = require("./routes/auth");
 
 
 //Database Connection
-mongoose.connect(process.env.DATABASE, {
+mongoose.connect("mongodb+srv://Nanda8106:Nanda1234spacex@spacex.amqlv.mongodb.net/spacex?retryWrites=true&w=majority", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex : true,
