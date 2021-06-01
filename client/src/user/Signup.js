@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {Link, Redirect} from "react-router-dom";
 import { signup } from "../auth/helper";
 import Base from "../core/Base";
-import Loading from "../core/Loading";
+
 
 
 const Signup = () => {
@@ -45,11 +45,7 @@ const Signup = () => {
         })
 
     }
-    const didloading = (loading) => {
-        if(loading){
-           return <Loading type="spin" color="#fffff"/>
-        }
-    }
+    
 
     const successMessage = () => {
         if(success){
@@ -98,7 +94,6 @@ const Signup = () => {
 
     return (
         <Base>
-            {didloading(loading)}
             {signupForm()}
             {didRedirect()}
         </Base>

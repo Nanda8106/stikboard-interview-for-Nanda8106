@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import {Link, Redirect} from "react-router-dom";
 import {authenticate, isAuthenticated, signin } from "../auth/helper";
 import Base from "../core/Base";
-import Loading from "../core/Loading";
 import "../styles.css"
 
 
@@ -49,11 +48,7 @@ const Signin = () => {
 
     }
 
-    const didloading = (loading) => {
-        if(loading){
-           return <Loading type="spin" color="#fffff"/>
-        }
-    }
+    
     const successMessage = () => {
         if(success){
             alert("You are logged in")
@@ -96,7 +91,7 @@ const Signin = () => {
     }
     return (
         <Base>
-            {didloading(loading)}
+            
             {signinForm()}
             {didRedirect()}
         </Base>
