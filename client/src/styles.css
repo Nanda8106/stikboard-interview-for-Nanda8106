@@ -276,7 +276,6 @@ table tr th:first-child {
     font-weight: 400;
     margin-bottom: 10px;
     border-radius: 5px;
-    display: none;
 }
 .login input{
     width: 90%;
