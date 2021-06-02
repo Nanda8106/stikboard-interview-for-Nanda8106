@@ -12,5 +12,5 @@
  * MongoDB
  
  ## Deployment Link:
- [deployment](https://60b5f4ad2c61161e8e0fad06--gracious-mccarthy-790919.netlify.app/)
+ [deployment](https://gracious-mccarthy-790919.netlify.app)
  
